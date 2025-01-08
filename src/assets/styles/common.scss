@@ -1,0 +1,238 @@
+/**
+ * 公共样式
+ */
+
+// 列表页面的分类tabs样式
+.type-wrap {
+  box-shadow: 0 -1px 1px 0 #e5e6eb inset;
+  margin-bottom: 12px;
+  .type {
+    padding: 0 24px;
+    line-height: 38px;
+    font-size: 14px;
+    text-align: center;
+    color: #4e5969;
+    background: #f7f8fa;
+    border: 1px solid #e5e6eb;
+    &:not(:first-child) {
+      border-left: none;
+    }
+    &.active {
+      background: #ffffff;
+      color: #1e2e4e;
+      font-weight: bold;
+      border-bottom: none;
+    }
+  }
+}
+
+// 列表搜素条件区域背景颜色
+.ion-search-area--bg {
+  background-color: $search-area-bg;
+  // 处理在 el-form-item 聚焦时，且存在 el-input__suffix 时，表单项宽度抖动的问题
+  .el-input__suffix {
+    width: 20px !important;
+  }
+}
+
+.ion-table-select-all--none > .cell {
+  display: none !important;
+}
+
+// 列表头部布局
+.ion-table-header {
+  display: grid;
+  grid-template-columns: max-content minmax(200px, 640px) auto;
+  align-items: center;
+}
+
+// 列表头部汇总信息
+.ion-table-summary {
+  color: #86909c;
+  font-size: 12px;
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1;
+  .summary-item {
+    position: relative;
+    padding-right: 18px;
+    margin-right: 22px;
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 1px;
+      height: 38px;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #e5e6eb;
+    }
+  }
+  .item-title {
+    color: #86909c;
+  }
+  .item-content {
+    font-size: 20px;
+    color: #1e2e4e;
+    font-weight: bold;
+    &::after {
+      content: attr(data-unit);
+      display: inline;
+      font-size: 12px;
+      color: #86909c;
+      padding-left: 5px;
+      vertical-align: unset;
+    }
+  }
+}
+
+// 列表审核状态
+.ion-status::before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+.ion-status_wait::before {
+  background-color: #86909c;
+}
+.ion-status_process::before {
+  background-color: #ff7d00;
+}
+.ion-status_success::before {
+  background-color: #00b42a;
+}
+.ion-status_error::before {
+  background-color: #f53f3f;
+}
+
+// 详情审核状态
+.ion-wait {
+  color: #86909c;
+}
+.ion-process {
+  color: #ff7d00;
+}
+.ion-success {
+  color: #00b42a;
+}
+.ion-error {
+  color: #f53f3f;
+}
+
+// 警告文字颜色
+.ion-warn {
+  color: #ff7d00;
+}
+
+// 重要文字颜色
+.ion-text-primary {
+  color: #1e2e4e;
+}
+// 次要文字颜色
+.ion-text-assist {
+  color: #86909c;
+}
+
+// 背景主色
+.ion-bg-primary {
+  background-color: #f5faff;
+}
+// 背景次色
+.ion-bg-assist {
+  background-color: #f7f8fa;
+}
+
+// main container background color
+.ion-bg-main-container {
+  background-color: #f2f3f5;
+}
+
+// 主要边框颜色
+.ion-border-primary {
+  border-color: #ebeef5;
+}
+
+// priview-file component file name background color
+.ion-bg-file-name {
+  background-color: #999;
+  height: 30px;
+}
+
+// 页面底部操作按钮
+.ion-footer-btns-shadow {
+  box-shadow: 0px -4px 16px 0px rgba(0, 0, 0, 0.1);
+}
+
+//  el-drawer 样式定制
+.ion-drawer {
+  .el-drawer__header {
+    background-color: #f7f8fa;
+    padding: 0 20px;
+    height: 60px;
+    margin-bottom: 0;
+    .el-drawer__title {
+      color: #1e2e4e;
+      font-weight: bold;
+    }
+    &::before {
+      content: '';
+      display: block;
+      margin-right: 8px;
+      width: 2px;
+      height: 16px;
+      background-color: #0e36ac;
+    }
+  }
+}
+
+// ion-tabs 样式定制
+.ion-tabs {
+  .el-tabs__content {
+    flex: 1;
+    overflow: hidden;
+  }
+}
+
+// ion-dialog 样式定制
+.ion-dialog {
+  .el-dialog__header {
+    margin: -16px -16px 0 -16px;
+    height: 40px;
+    background: #f2f3f5;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    .el-dialog__title {
+      margin-left: 10px;
+      position: relative;
+      font-size: 16px;
+      font-weight: bold;
+      color: #1e2e4e;
+      &::before {
+        content: '';
+        display: block;
+        width: 2px;
+        height: 80%;
+        position: absolute;
+        left: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #0e36ac;
+      }
+    }
+  }
+}
+
+// el-loading 样式定制
+.ion-loading {
+  .circular {
+    width: var(--el-loading-spinner-size) !important;
+    height: var(--el-loading-spinner-size) !important;
+    animation: none !important;
+  }
+}

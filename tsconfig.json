@@ -1,0 +1,15 @@
+// 此文件时vsCode官方配置，可查阅vsCode官方文档进行配置
+// @see{@link https://code.visualstudio.com/docs/languages/jsconfig}
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "smt-sys-pc", 
+    "allowJs": true,
+    "paths": {
+      "@/*": ["src/*"],
+      "~/*": ["./*"]
+    },
+    "types": ["element-plus/global"],
+  },
+  "exclude": ["node_modules", "smt-sys-pc", "public", ".vscode"],
+}

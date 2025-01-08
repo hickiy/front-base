@@ -1,0 +1,141 @@
+/* element-plus custom theme */
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'primary': (
+      'base': #0e36ac
+    ),
+    'success': (
+      'base': #13ce66
+    ),
+    'warning': (
+      'base': #ffba00
+    ),
+    'danger': (
+      'base': #ff4949
+    )
+  )
+);
+
+/* element-plus style */
+@use 'element-plus/theme-chalk/src/index.scss' as *;
+
+// element-plus variable override
+:root {
+  --el-loading-spinner-size: 100px;
+}
+
+/* element-plus style reset */
+.el-menu {
+  // reset border-right
+  border-right: none !important;
+}
+
+.el-form {
+  // set min with for inline form, avoid the form item too narrow
+  &.el-form--inline {
+    .el-form-item__content {
+      min-width: 220px;
+    }
+  }
+}
+
+/* el-table style reset */
+.el-table {
+  // header font-size and color reset
+  .el-table__header-wrapper th {
+    background-color: #f2f3f5 !important;
+    color: #6e7782;
+  }
+  // scroll bar style reset
+  .el-scrollbar__bar.is-horizontal {
+    height: 12px;
+  }
+  .el-scrollbar__bar.is-vertical {
+    width: 12px;
+  }
+  .el-button.is-link > span {
+    line-height: 12px;
+  }
+  th.el-table__cell.is-required > div::before {
+    content: '*';
+    color: var(--el-color-danger);
+    margin-right: 4px;
+  }
+  .el-table__row.setup > td {
+    padding: 5px 0 0 0 !important;
+  }
+  .el-table__row.setup .cell {
+    min-height: 42px;
+  }
+}
+
+// message-box 样式定制
+.ion-message-box {
+  .el-message-box__header {
+    background: #f2f3f5;
+    margin: -10px -10px 10px -10px;
+    padding-bottom: 0;
+  }
+  .el-message-box__title {
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #1e2e4e;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    &::before {
+      content: '';
+      display: block;
+      width: 2px;
+      height: 20px;
+      margin-right: 10px;
+      background-color: #0e36ac;
+    }
+  }
+  .el-message-box__message {
+    flex: 1;
+  }
+}
+
+// el-collapse 样式定制
+.el-collapse.ion-collapse {
+  border: none;
+  .el-collapse-item {
+    border-width: 1px 1px 0 1px;
+    border-color: #e5e6eb;
+    border-style: solid;
+    margin-bottom: 16px;
+  }
+  .el-collapse-item__header {
+    background: #f5faff;
+    &::before {
+      content: '';
+      margin-left: 20px;
+      margin-right: 5px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #4e5969;
+    }
+  }
+  .el-collapse-item__content {
+    padding: 20px 15px;
+  }
+  .el-descriptions-item {
+    line-height: 2.5em;
+  }
+}
+
+// el-descriptions 样式定制
+.el-descriptions {
+  .el-descriptions__table {
+    table-layout: fixed;
+  }
+  --el-descriptions-item-bordered-label-background: #fafafa;
+  .el-descriptions__label.is-required::before {
+    content: '*';
+    color: var(--el-color-danger);
+    margin-right: 0.25rem;
+  }
+}

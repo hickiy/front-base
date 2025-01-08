@@ -1,0 +1,77 @@
+import { login, logout, getInfo } from '@/api/login';
+import { getToken, setToken, removeToken } from '@/utils/cookies';
+import defAva from '@/assets/images/profile.jpg';
+
+const useUserStore = defineStore('user', {
+  state: () => ({
+    token: getToken(),
+    id: '',
+    name: '',
+    jobNumber: '',
+    avatar: '',
+    roles: [],
+    permissions: []
+  }),
+  actions: {
+    // 登录
+    login(userInfo) {
+      const username = userInfo.username.trim();
+      const password = userInfo.password;
+      return new Promise((resolve, reject) => {
+        login(username, password)
+          .then((res) => {
+            setToken(res.data.access_token);
+            this.token = res.data.access_token;
+            resolve();
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+    // 获取用户信息
+    getInfo() {
+      return new Promise((resolve, reject) => {
+        getInfo()
+          .then((res) => {
+            const user = res.user;
+            const avatar = user.avatar == '' || user.avatar == null ? defAva : import.meta.env.VITE_APP_BASE_API + user.avatar;
+
+            if (res.roles && res.roles.length > 0) {
+              // 验证返回的roles是否是一个非空数组
+              this.roles = res.roles;
+              this.permissions = res.permissions;
+            } else {
+              this.roles = ['ROLE_DEFAULT'];
+            }
+            this.id = user.userId;
+            this.name = user.nickName;
+            this.avatar = avatar;
+            this.jobNumber = user.jobNumber;
+            resolve(res);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+    // 退出系统
+    logOut() {
+      return new Promise((resolve, reject) => {
+        logout(this.token)
+          .then(() => {
+            this.token = '';
+            this.roles = [];
+            this.permissions = [];
+            removeToken();
+            resolve();
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    }
+  }
+});
+
+export default useUserStore;
