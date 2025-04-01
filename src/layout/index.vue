@@ -1,5 +1,5 @@
 <template>
-  <section class="h-screen w-screen min-w-[1280PX] flex flex-col">
+  <section class="h-screen w-screen min-w-[1280PX] flex flex-col ion-text-primary">
     <navbar />
     <section class="flex flex-row flex-1 overflow-hidden">
       <sidebar />
@@ -17,3 +17,4 @@ import Breadcrumb from './Breadcrumb/index.vue';
 import AppMain from './AppMain/index.vue';
 import Navbar from './Navbar/index.vue';
 </script>
+

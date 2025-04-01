@@ -55,7 +55,7 @@ export const constantRoutes = [
       {
         path: '/index',
         component: () => import('@/views/index'),
-        meta: { title: '首页', icon: 'shouye', activeMenu: '/index' }
+        meta: { title: '首页', icon: 'shouye', routeType: 'menu' }
       }
     ]
   }

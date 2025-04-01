@@ -1,6 +1,6 @@
 import '@/assets/styles/element-plus.scss'; // element-plus theme
 import '@/assets/styles/index.scss'; // global css
-import 'uno.css'; // uno.css
+import '@/assets/styles/tailwind.css'; // tailwindcss
 import 'nprogress/nprogress.css'; // progress bar style
 
 

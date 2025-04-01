@@ -31,41 +31,41 @@
 </template>
 
 <script setup name="Sidebar">
-import SidebarItem from './SidebarItem';
-import variables from '@/assets/styles/variables.module.scss';
-import useAppStore from '@/store/modules/app';
-import useSettingsStore from '@/store/modules/app';
-import usePermissionStore from '@/store/modules/permission';
-import useViewsStore from '@/store/modules/views';
+  import SidebarItem from './SidebarItem';
+  import variables from '@/assets/styles/variables.module.scss';
+  import useAppStore from '@/store/modules/app';
+  import useSettingsStore from '@/store/modules/app';
+  import usePermissionStore from '@/store/modules/permission';
+  import useViewsStore from '@/store/modules/views';
 
-const appStore = useAppStore();
-const settingsStore = useSettingsStore();
-const permissionStore = usePermissionStore();
-const { breadcrumbs } = useViewsStore();
+  const appStore = useAppStore();
+  const settingsStore = useSettingsStore();
+  const permissionStore = usePermissionStore();
+  const { breadcrumbs } = useViewsStore();
 
-const sidebarRouters = computed(() => permissionStore.sidebarRouters);
-const showLogo = computed(() => settingsStore.sidebarLogo);
-const theme = computed(() => settingsStore.theme);
-const isCollapse = computed(() => !appStore.sidebar.opened);
+  const sidebarRouters = computed(() => permissionStore.sidebarRouters);
+  const showLogo = computed(() => settingsStore.sidebarLogo);
+  const theme = computed(() => settingsStore.theme);
+  const isCollapse = computed(() => !appStore.sidebar.opened);
 
-const activeMenu = computed(() => {
-  return breadcrumbs[0]?.path;
-});
+  const activeMenu = computed(() => {
+    return breadcrumbs[0]?.path;
+  });
 </script>
 <style scoped lang="scss">
-.sidebar-wrap:deep() {
-  .el-menu-item {
-    &.is-active {
-      color: #fff;
-      background-color: #0e36ac;
-      &:hover {
-        background-color: #282e3c !important;
+  .sidebar-wrap:deep() {
+    .el-menu-item {
+      &.is-active {
+        color: #fff;
+        background-color: #0e36ac;
+        &:hover {
+          background-color: #282e3c !important;
+        }
       }
     }
   }
-}
-.sidebar-wrap {
-  transition: width 0.28s;
-  box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
-}
+  .sidebar-wrap {
+    transition: width 0.28s;
+    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+  }
 </style>

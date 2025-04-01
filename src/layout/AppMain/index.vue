@@ -2,7 +2,7 @@
   <div
     v-loading="isLoading"
     :style="{ 'pointer-events': isLoading ? 'none' : 'auto' }"
-    class="ion-bg-main-container flex-1 flex flex-col overflow-y-auto overflow-x-hidden"
+    class="ion-bg-main-container flex flex-col flex-1 overflow-y-auto overflow-x-hidden"
   >
     <router-view #default="{ Component, route }">
       <transition name="fade-transform" mode="out-in">
@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import useViewsStore from '@/store/modules/views';
-import { isLoading } from '@/utils/modal';
-const { cachedViews } = useViewsStore();
+  import useViewsStore from '@/store/modules/views';
+  import { isLoading } from '@/utils/modal';
+  const { cachedViews } = useViewsStore();
 </script>

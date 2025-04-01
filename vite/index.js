@@ -3,7 +3,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import createAutoImport from './auto-import'
 import createCompression from './compression'
 import createSetupExtend from './setup-extend'
-import UnoCSS from 'unocss/vite';
+import tailwindcss from '@tailwindcss/vite'
 import SvgIcons from './svg-Icons'
 
 
@@ -13,7 +13,7 @@ export default function createVitePlugins(viteEnv, isBuild = false) {
     vitePlugins.push(vueJsx())
     vitePlugins.push(createAutoImport())
     vitePlugins.push(createSetupExtend())
-    vitePlugins.push(UnoCSS())
+    vitePlugins.push(tailwindcss())
     vitePlugins.push(SvgIcons())
     isBuild && vitePlugins.push(...createCompression(viteEnv))
     return vitePlugins
