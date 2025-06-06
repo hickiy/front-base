@@ -73,9 +73,9 @@
 </script>
 
 <style lang="scss" scoped>
-  @use '/src/assets/styles/variables.module.scss' as *;
+  @use '@/assets/styles/variables.module.scss' as variables;
   .navbar {
-    height: $base-navbar-height;
+    height: variables.$base-navbar-height;
     background: #ffffff;
     box-shadow: 0px 4px 4px 0px rgba(56, 85, 119, 0.07);
     display: flex;

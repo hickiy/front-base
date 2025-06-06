@@ -56,6 +56,11 @@ export default defineConfig(({ mode, command }) => {
       }
     },
     css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler', // 使用dart-sass
+        }
+      },
       postcss: {
         plugins: [
           // 自动添加浏览器前缀

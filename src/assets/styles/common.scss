@@ -1,3 +1,5 @@
+@use "variables.module.scss";
+
 /**
  * 公共样式
  */
@@ -28,7 +30,7 @@
 
 // 列表搜素条件区域背景颜色
 .ion-search-area--bg {
-  background-color: $search-area-bg;
+  background-color: variables.$search-area-bg;
   // 处理在 el-form-item 聚焦时，且存在 el-input__suffix 时，表单项宽度抖动的问题
   .el-input__suffix {
     width: 20px !important;

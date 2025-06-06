@@ -1,6 +1,6 @@
-@import './variables.module.scss';
-@import './transition.scss';
-@import './common.scss';
+@use './variables.module.scss';
+@use './transition.scss';
+@use './common.scss';
 
 /* reset default style for brower */
 a,
