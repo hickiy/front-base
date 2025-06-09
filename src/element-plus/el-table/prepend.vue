@@ -22,8 +22,8 @@
             :label="c.label"
             :value="c.id"
             :key="c.id"
-            :disabled="!!c.fixed || c.type != 'default'"
-            :checked="true"
+            :checked="c.active"
+            :disabled="ids.length == 1 && ids.includes(c.id)"
             @change="columnChange($event, c)"
           ></el-checkbox>
         </el-checkbox-group>
@@ -44,7 +44,13 @@
     },
     mounted() {
       this.$nextTick(() => {
-        this.columns = [...this.$parent.store?.states?._columns.value];
+        this.columns = this.$parent.store?.states?._columns.value.filter((c) => !c.fixed || c.type != 'default') || [];
+        const store = this.$parent.store;
+        this.columns.forEach((col) => {
+          if (!col.active) {
+            store.commit('removeColumn', col, null);
+          }
+        });
       });
     },
     methods: {

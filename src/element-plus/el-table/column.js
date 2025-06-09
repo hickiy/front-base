@@ -1,7 +1,7 @@
 import { ElTableColumn } from 'element-plus';
 import { numSection } from '@/utils/formatNum';
 import { strMask } from '@/utils/formatStr';
-import { getCurrentInstance } from 'vue';
+import { getCurrentInstance, onBeforeMount } from 'vue';
 
 // 字符串截断配置
 const truncationConf = {
@@ -87,9 +87,15 @@ export default {
           }
         }
       }
+    },
+    // 是否激活
+    active: {
+      type: Boolean,
+      default: true
     }
   },
   setup(props, ctx) {
+    let instance = getCurrentInstance();
     /**
      * 这里用于实现按照字段类型进行自定义的对齐设置
      * 由于vue3中的props是只读的，无法修改，因此创建影子props, 用于拦截align的读取
@@ -114,6 +120,12 @@ export default {
         }
       }
     });
-    return ElTableColumn.setup(shadowProps, ctx);
+    let render = ElTableColumn.setup(shadowProps, ctx);
+
+    onBeforeMount(() => {
+      instance.columnConfig.value.active = props.active;
+    });
+    
+    return render;
   }
 }
