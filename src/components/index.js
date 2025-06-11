@@ -16,7 +16,8 @@ import PreviewFile from './FileViewer/el-preview-file.vue';
 import Echarts from './Echarts/index.vue';
 // 列表表头图表组件
 import TableHeadChart from './TableHeadChart/index.vue';
-
+// 系统管理分页组件
+import Pagination from './Pagination/index.vue';
 export default function (app) {
   // 全局自定义组件挂载
   app.component('DictTag', DictTag);
@@ -27,6 +28,7 @@ export default function (app) {
   app.component('SvgIcon', SvgIcon);
   app.component('Echarts', Echarts);
   app.component('TableHeadChart', TableHeadChart);
+  app.component('Pagination', Pagination);
   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component);
   }

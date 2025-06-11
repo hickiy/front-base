@@ -6,7 +6,6 @@ import 'nprogress/nprogress.css'; // progress bar style
 
 import { createApp } from 'vue'; // vue3
 import ElementPlus from '@/element-plus'; // element-plus
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs' // element-plus 中文
 
 import App from './App.vue'; // app
 import store from './store'; // pinia
@@ -29,10 +28,7 @@ app.use(directive);
 // 工具挂载
 app.use(utils);
 // element-plus 全量引入
-app.use(ElementPlus, {
-  size: 'large', // 支持 large、default、small
-  locale: zhCn // element-plus 中文
-});
+app.use(ElementPlus);
 // 应用挂载
 app.mount('#app');
 

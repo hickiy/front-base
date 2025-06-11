@@ -1,0 +1,227 @@
+<template>
+  <div class="bg-white flex-1 p-4 m-2.5 flex flex-col overflow-hidden">
+    <el-form class="ion-search-area--bg pt-4 pl-4 pr-4" ref="queryForm" label-width="68px" :model="queryParams" :inline="true">
+      <el-form-item label="参数名称" prop="configName">
+        <el-input v-model="queryParams.configName" placeholder="请输入参数名称" clearable @keyup.enter="handleQuery" />
+      </el-form-item>
+      <el-form-item label="参数键名" prop="configKey">
+        <el-input v-model="queryParams.configKey" placeholder="请输入参数键名" clearable @keyup.enter="handleQuery" />
+      </el-form-item>
+      <el-form-item label="系统内置" prop="configType">
+        <el-select v-model="queryParams.configType" placeholder="系统内置" clearable>
+          <el-option v-for="dict in sys_yes_no" :key="dict.value" :label="dict.label" :value="dict.value" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="创建时间">
+        <el-date-picker
+          v-model="dateRange"
+          value-format="YYYY-MM-DD"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        ></el-date-picker>
+      </el-form-item>
+      <template #append>
+        <el-button @click="resetQuery">重置</el-button>
+        <el-button type="primary" @click="handleQuery">搜索</el-button>
+      </template>
+    </el-form>
+    <el-table title="参数配置列表" height="100%" :set-table="[]" v-loading="loading" :data="configList" :border="true">
+      <template #prepend>
+        <div class="flex flex-row justify-end">
+          <el-button type="primary" size="default" @click="handleRefreshCache" v-hasPermi="['system:config:remove']">刷新缓存</el-button>
+          <el-button type="primary" size="default" @click="handleAdd" v-hasPermi="['system:config:add']">新增</el-button>
+        </div>
+      </template>
+      <el-table-column label="参数主键" prop="configId" min-width="120" />
+      <el-table-column label="参数名称" prop="configName" min-width="120" />
+      <el-table-column label="参数键名" prop="configKey" min-width="120" />
+      <el-table-column label="参数键值" prop="configValue" min-width="120" />
+      <el-table-column label="系统内置" prop="configType" min-width="120" #default="scope">
+        <dict-tag size="small" :options="sys_yes_no" :value="scope.row.configType" />
+      </el-table-column>
+      <el-table-column label="备注" prop="remark" min-width="180" />
+      <el-table-column label="创建时间" prop="createTime" min-width="180" #default="scope">
+        <span>{{ parseTime(scope.row.createTime) }}</span>
+      </el-table-column>
+      <el-table-column label="操作" width="120" #default="scope">
+        <el-button type="primary" link @click="handleUpdate(scope.row)" v-hasPermi="['system:config:edit']">修改</el-button>
+        <el-button type="primary" link @click="handleDelete(scope.row)" v-hasPermi="['system:config:remove']">删除</el-button>
+      </el-table-column>
+    </el-table>
+
+    <pagination :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" @pagination="getList" />
+
+    <!-- 添加或修改参数配置对话框 -->
+    <el-dialog :title="title" v-model="open" width="760px" class="ion-dialog">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" class="mt-4">
+        <el-form-item label="参数名称" prop="configName">
+          <el-input v-model="form.configName" placeholder="请输入参数名称" />
+        </el-form-item>
+        <el-form-item label="参数键名" prop="configKey">
+          <el-input v-model="form.configKey" placeholder="请输入参数键名" />
+        </el-form-item>
+        <el-form-item label="参数键值" prop="configValue">
+          <el-input v-model="form.configValue" placeholder="请输入参数键值" />
+        </el-form-item>
+        <el-form-item label="系统内置" prop="configType">
+          <el-radio-group v-model="form.configType">
+            <el-radio v-for="dict in sys_yes_no" :key="dict.value" :value="dict.value">{{ dict.label }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+      </template>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+  import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache } from '@/api/system/config';
+
+  export default {
+    name: 'Config',
+    data() {
+      return {
+        sys_yes_no: this.$useDict('sys_yes_no'),
+        // 遮罩层
+        loading: true,
+        // 总条数
+        total: 0,
+        // 参数表格数据
+        configList: [],
+        // 弹出层标题
+        title: '',
+        // 是否显示弹出层
+        open: false,
+        // 日期范围
+        dateRange: [],
+        // 查询参数
+        queryParams: {
+          pageNum: 1,
+          pageSize: 20,
+          configName: undefined,
+          configKey: undefined,
+          configType: undefined
+        },
+        // 表单参数
+        form: {},
+        // 表单校验
+        rules: {
+          configName: [{ required: true, message: '参数名称不能为空', trigger: 'blur' }],
+          configKey: [{ required: true, message: '参数键名不能为空', trigger: 'blur' }],
+          configValue: [{ required: true, message: '参数键值不能为空', trigger: 'blur' }]
+        }
+      };
+    },
+    created() {
+      this.getList();
+    },
+    methods: {
+      /** 查询参数列表 */
+      getList() {
+        this.loading = true;
+        listConfig(this.addDateRange(this.queryParams, this.dateRange)).then((response) => {
+          this.configList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        });
+      },
+      // 取消按钮
+      cancel() {
+        this.open = false;
+        this.reset();
+      },
+      // 表单重置
+      reset() {
+        this.form = {
+          configId: undefined,
+          configName: undefined,
+          configKey: undefined,
+          configValue: undefined,
+          configType: 'Y',
+          remark: undefined
+        };
+        this.resetForm('form');
+      },
+      /** 搜索按钮操作 */
+      handleQuery() {
+        this.queryParams.pageNum = 1;
+        this.getList();
+      },
+      /** 重置按钮操作 */
+      resetQuery() {
+        this.dateRange = [];
+        this.resetForm('queryForm');
+        this.handleQuery();
+      },
+      /** 新增按钮操作 */
+      handleAdd() {
+        this.reset();
+        this.open = true;
+        this.title = '添加参数';
+      },
+      // 多选框选中数据
+      handleSelectionChange(selection) {
+        this.ids = selection.map((item) => item.configId);
+        this.single = selection.length != 1;
+        this.multiple = !selection.length;
+      },
+      /** 修改按钮操作 */
+      handleUpdate(row) {
+        this.reset();
+        const configId = row.configId || this.ids;
+        getConfig(configId).then((response) => {
+          this.form = response.data;
+          this.open = true;
+          this.title = '修改参数';
+        });
+      },
+      /** 提交按钮 */
+      submitForm: function () {
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            if (this.form.configId != undefined) {
+              updateConfig(this.form).then((response) => {
+                this.$message.success('修改成功');
+                this.open = false;
+                this.getList();
+              });
+            } else {
+              addConfig(this.form).then((response) => {
+                this.$message.success('新增成功');
+                this.open = false;
+                this.getList();
+              });
+            }
+          }
+        });
+      },
+      /** 删除按钮操作 */
+      handleDelete(row) {
+        const configIds = row.configId || this.ids;
+        this.$confirm('是否确认删除参数编号为"' + configIds + '"的数据项？', '提示', { type: 'warning' })
+          .then(function () {
+            return delConfig(configIds);
+          })
+          .then(() => {
+            this.getList();
+            this.$message.success('删除成功');
+          })
+          .catch(() => {});
+      },
+      /** 刷新缓存按钮操作 */
+      handleRefreshCache() {
+        refreshCache().then(() => {
+          this.$message.success('刷新成功');
+        });
+      }
+    }
+  };
+</script>

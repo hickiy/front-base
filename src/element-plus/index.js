@@ -5,8 +5,9 @@ import MyTable from './el-table';
 import MyTableColumn from './el-table/column';
 import MyForm from './el-form';
 import MyLoading from './el-loading';
+import MyPagination from './el-pagination';
 // 重写ElementPlus的install方法，将自定义的组件也注册到Vue中
-const { ElInput, ElUpload, ElTable, ElTableColumn, ElForm, ElLoading, ...component } = ElementPlus;
+const { ElInput, ElUpload, ElTable, ElTableColumn, ElForm, ElLoading, ElPagination, ...component } = ElementPlus;
 export default {
   install(app, options) {
     if (app[ElementPlus.INSTALLED_KEY]) return;
@@ -23,6 +24,7 @@ export default {
     app.component('ElTableColumn', MyTableColumn);
     app.component('ElForm', MyForm);
     app.component('ElFormItem', ElForm.FormItem);
+    app.component('ElPagination', MyPagination);
     if (options) ElementPlus.provideGlobalConfig(options, app, true);
   },
   version: ElementPlus.version

@@ -7,7 +7,10 @@ import * as auth from './auth'; // 权限工具
 import * as formatTime from './formatTime'; // 时间格式化`
 import modal from './modal'; // 消息提示
 import * as typeOf from './typeOf'; // 类型判断
+import { trackEvent } from '@/utils/trackEvent'; // 埋点
+import { getConfigKey } from "@/api/system/config"; // 获取配置
 import { toOa, toYsByUrl, toYsHome } from './jumper'; // oa审批单跳转
+import { addDateRange, handleTree, parseTime, resetForm, selectDictLabel, selectDictLabels } from "@/utils/sys";
 
 export default function (app) {
   app.config.globalProperties.$useDict = useDict;
@@ -22,10 +25,12 @@ export default function (app) {
   app.config.globalProperties.$toOa = toOa;
   app.config.globalProperties.$toYsByUrl = toYsByUrl;
   app.config.globalProperties.$toYsHome = toYsHome;
-  app.config.globalProperties.parseTime = function () { };
-  app.config.globalProperties.resetForm = function () { };
-  app.config.globalProperties.handleTree = function () { };
-  app.config.globalProperties.addDateRange = function () { };
-  app.config.globalProperties.selectDictLabel = function () { };
-  app.config.globalProperties.selectDictLabels = function () { };
+  app.config.globalProperties.$trackEvent = trackEvent;
+  app.config.globalProperties.$getConfigKey = getConfigKey;
+  app.config.globalProperties.handleTree = handleTree;
+  app.config.globalProperties.resetForm = resetForm;
+  app.config.globalProperties.addDateRange = addDateRange;
+  app.config.globalProperties.selectDictLabel = selectDictLabel;
+  app.config.globalProperties.selectDictLabels = selectDictLabels;
+  app.config.globalProperties.parseTime = parseTime;
 }

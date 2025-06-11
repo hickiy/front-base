@@ -37,3 +37,14 @@ export function yongyousso(params) {
   });
 }
 
+// 系统埋点操作
+export function burialPoint(data) {
+  return request({
+    url: '/system/user/burialPoint',
+    method: 'post',
+    data: data,
+    headers: {
+      repeatSubmit: false
+    }
+  });
+}
