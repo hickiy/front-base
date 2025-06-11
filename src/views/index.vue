@@ -1,6 +1,6 @@
 <template>
   <div class="h-full bg-white p-2.5 flex flex-col">
-    <el-table :data="list" :border="true" :set-table="[]" title="text">
+    <el-table :data="list" :border="true" :set-table="[]" title="part columns default hidden">
       <el-table-column prop="id" label="ID" width="80"></el-table-column>
       <el-table-column prop="name" label="Name" width="180" :active="false"></el-table-column>
       <el-table-column prop="age" label="Age" width="100"></el-table-column>
