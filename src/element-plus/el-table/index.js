@@ -17,6 +17,12 @@ export default {
       default: true
     },
   },
+  methods: {
+    // 获取失活的列
+    getDeactivatedCols() {
+      return this.$refs['table-setting']?.getDeactivatedCols();
+    },
+  },
   setup(props, ctx) {
     return ElTable.setup(props, ctx);
   },

@@ -54,6 +54,15 @@
       });
     },
     methods: {
+      // 计算失活的列
+      getDeactivatedCols() {
+        return this.columns.reduce((acc, col) => {
+          if (this.ids.indexOf(col.id) == -1) {
+            acc.push(col.property);
+          }
+          return acc;
+        }, []);
+      },
       columnChange(val, col) {
         const store = this.$parent.store;
         if (val) {
