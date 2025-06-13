@@ -238,3 +238,10 @@
     animation: none !important;
   }
 }
+
+// ion-input-number 样式定制
+.ion-input-number {
+  .el-input__inner {
+    text-align: left !important;
+  }
+}
